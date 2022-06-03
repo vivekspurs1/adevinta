@@ -1,0 +1,12 @@
+pipeline {
+agent any
+
+stages{
+stage('Trigger playbook') {
+steps {
+sh "ansible-playbook /test/playbook.yml"
+}
+}
+
+}
+}
