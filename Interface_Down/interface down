@@ -1,0 +1,12 @@
+pipeline {
+agent any
+
+stages{
+stage('Trigger playbook') {
+steps {
+sh "ansible-playbook /test2/playbook.yml --extra-vars hostname=${hostname} --extra-vars devicefamilyname=${devicefamilyname} --extra-vars interfacenumber=${interfacenumber} --extra-vars incnumber=${incnumber}"
+}
+}
+
+}
+}
