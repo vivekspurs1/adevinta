@@ -1,0 +1,27 @@
+---
+#- name: insert a line at the end of the files
+#  lineinfile:
+#    create: true
+#    dest: "/tmp/high_memory_alert.txt"
+#    state: present
+#    line: "{{ item }}"
+#  loop: "{{ lookup('flattened', mem_util.stdout_lines, wantlist=True) }}"
+#  ignore_errors: true
+
+- name: Display output of which process is consuming high memory
+  debug:
+    msg:
+      - "------------------------------------"
+      - "sh processes memory sorted"
+      - "-----------------------------------"
+      - "{{ mem_util.stdout_lines }}"
+      - "-----------------------------------"
+      - "Email content Starts: "
+      - "High memory utilization is observed on {{ hostname }} . Please check which process is consuming high memory and take an action accordingly."
+      - "Email content Ends"
+  ignore_errors: true
+
+#- name: cleanup of temporary files
+#  file:
+#    path: /tmp/high_memory_alert.txt
+#    state: absent

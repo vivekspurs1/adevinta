@@ -1,0 +1,33 @@
+---
+- hosts: all
+  connection: network_cli
+  gather_facts: false
+  tasks:
+  - name: Below command will be executed on device to check which process is consuming high memory.
+    ios_command:
+      commands:
+        - Show memory summary
+    register: mem_util
+    ignore_errors: true
+
+  - debug: var=mem_util
+    ignore_errors: true
+
+  - name: Printing static statement when 'Show memory summary' command fails
+    debug:
+      msg:
+        - "The below mentioned command failed to execute on {{ hostname }}"
+        - "sh processes memory sorted"
+        - "Please check this issue manually."
+        - "Email content Starts: "
+        - "The below mentioned command failed to execute on {{ hostname }} for the incident in subject."
+        - "Show memory summary"
+        - "Please resolve this issue manually."
+        - "Email content Ends"
+    ignore_errors: true
+    when: mem_util is failed
+
+  - name: Include All Model task list in play
+    include_tasks: all_model.yml
+    ignore_errors: true
+    when: mem_util is success

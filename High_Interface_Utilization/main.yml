@@ -1,0 +1,82 @@
+---
+- hosts: all
+  connection: network_cli
+  gather_facts: false
+
+  tasks:
+  - name: Triggering high interface utilization command
+    ios_command:
+       commands:
+          - show interface {{ interfacenumber }}
+    register: interface
+    ignore_errors: true
+
+  - debug: var=interface
+
+  - name: Triggering high interface utilization command in human-readable format
+    ios_command:
+       commands:
+          - show interface {{ interfacenumber }} human-readable | in rate
+    register: interface_read
+    ignore_errors: true
+
+  - debug: var=interface_read
+  
+  - name: Printing static statement when failed to check for input error
+    debug:
+       msg:
+          - "The below mentioned commands failed to execute on {{ interfacenumber }}"
+          - "show interface {{ interfacenumber }}"
+          - "show interface {{ interfacenumber }} human-readable | in rate"
+          - "Please check this issue manually."
+          - "Email content Starts: "
+          - "The below mentioned commands failed to execute on {{ hostname }}"
+          - "show interface {{ interfacenumber }}"
+          - "show interface {{ interfacenumber }} human-readable | in rate"
+          - "Please resolve this issue manually."
+          - "Email content Ends"
+    ignore_errors: true
+    when: 
+      - interface is failed
+      - interface_read is failed 
+
+#- name: insert a line at the end of the files
+#  lineinfile:
+#    create: true
+#    dest: "/tmp/high_interface_alert.txt"
+#    state: present
+#    line: "{{ item }}"
+#  loop: "{{ lookup('flattened', interface.stdout_lines, wantlist=True) }}"
+#  ignore_errors: true
+
+  - name: display output of interface
+    debug:
+       msg:
+          - "-----------------------------------"
+          - "show interface {{ interfacenumber }}"
+          - "-----------------------------------"
+          - "{{ interface.stdout_lines }}"
+          - "------------------------------------"
+          - "show interface {{ interfacenumber }} human-readable | in rate"
+          - "-----------------------------------"
+          - "{{ interface.stdout_lines }} human-readable | in rate"
+          - "------------------------------------"
+          - "Email content Starts: "
+          - "High input output utilization observed on {{ hostname }} interface."
+          - "----------------------------------------------------------------------------"
+          - "Output of show interface {{ interfacenumber }} is :"
+          - "-----------------------------------------------------------------------------"
+          - "{{ interface.stdout_lines }}"
+          - "-----------------------------------------------------------------------------"
+          - "Output of show interface {{ interfacenumber }} human-readable | in rate is :"
+          - "-----------------------------------------------------------------------------"
+          - "{{ interface.stdout_lines }} human-readable | in rate"
+          - "-----------------------------------------------------------------------------"
+          - "Email content Ends"
+    ignore_errors: true
+
+#- name: cleanup of temporary files
+#  file:
+#    path: /tmp/high_interface_alert.txt
+#    state: absent
+
