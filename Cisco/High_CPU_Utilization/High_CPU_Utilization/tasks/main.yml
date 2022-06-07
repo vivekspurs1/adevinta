@@ -1,0 +1,47 @@
+---
+- name: Triggering high cpu utilization command on device
+  ios_command:
+    commands:
+      - sh processes cpu sorted | ex 0.00
+  register: cpu_util
+  ignore_errors: true
+- debug: var=cpu_util
+
+- name: Triggering high cpu utilization history
+  ios_command:
+    commands:
+      - sh processes cpu history | ex 0.00
+  register: cpu_his
+  ignore_errors: true
+- debug: var=cpu_his
+
+- name: saving the file as text file
+  copy content={{ cpu_util }} dest=/path/to/destination/file
+
+- name: Printing static statement when failed to check for input error
+  debug:
+    msg:
+      - "The below mentioned command failed to execute on {{ inventory_hostname }} "
+      - "sh processes cpu sorted | ex 0.00"
+      - "Please check this issue manually."
+      - "Output for Rundeck Ends"
+      - "Email content Starts: "
+      - "The below mentioned command failed to execute on {{ inventory_hostname }}"
+      - "sh processes cpu sorted | ex 0.00"
+      - "Please resolve this issue manually."
+      - "Email content Ends"
+  ignore_errors: true
+  when: cpu_util is failed
+
+- name: Display output consuming high CPU
+  debug:
+    msg:
+      - "High CPU utilization is observed on {{ inventory_hostname }}."
+      - "-------------------------------------------------------------"
+      - "Output of show proc cpu sort | ex 0.00"
+      - "{{ cpu_util.stdout_lines }}"
+      - "Output of show proc cpu hist | ex 0.00"
+      - "{{ cpu_his.stdout_lines }}"
+  ignore_errors: true
+  when: cpu_util is success
+

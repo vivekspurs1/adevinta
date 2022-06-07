@@ -1,0 +1,15 @@
+---
+- hosts: all
+  connection: network_cli
+  gather_facts: false
+  tasks:
+  - name: checking interface status
+    ios_command:
+     commands:
+      - Show interface {{ interface_name }} status
+      - Show run interface {{ interface_name }}
+    register: status
+    ignore_errors: true
+
+  - debug: var=status
+    ignore_errors: true
