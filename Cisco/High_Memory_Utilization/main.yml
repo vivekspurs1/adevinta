@@ -1,0 +1,6 @@
+---
+- name: High Memory Utilization
+  hosts: all
+  roles:
+   - role: "High_Memory_Utilization"
+
