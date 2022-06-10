@@ -1,5 +1,5 @@
 ---
-- name: High Memory Utilization
+- name: High Interface Utilization
   hosts: all
   roles:
    - role: "High_Interface_Utilization"

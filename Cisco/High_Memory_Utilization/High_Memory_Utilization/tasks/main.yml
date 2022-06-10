@@ -1,5 +1,5 @@
 ---
-- hosts: all
+- hosts: "{{ hostname }}"
   connection: network_cli
   gather_facts: false
   tasks:
@@ -13,21 +13,25 @@
   - debug: var=mem_util
     ignore_errors: true
 
-  - name: Printing static statement when 'Show memory summary' command fails
-    debug:
-      msg:
-        - "The below mentioned command failed to execute on {{ hostname }}"
-        - "sh processes memory sorted"
-        - "Please check this issue manually."
-        - "Email content Starts: "
-        - "The below mentioned command failed to execute on {{ hostname }} for the incident in subject."
-        - "Show memory summary"
-        - "Please resolve this issue manually."
-        - "Email content Ends"
-    ignore_errors: true
-    when: mem_util is failed
+  - name: encoding
+    shell: echo {{ mem_util.stdout | b64encode }}
+    register: mem_util_encode
 
-  - name: Include All Model task list in play
-    include_tasks: all_model.yml
-    ignore_errors: true
-    when: mem_util is success
+  - command: date +'%d/%m/%Y_%H:%M:%S'
+    register: timestamp
+
+  - name: "Create output attachment in incident"
+    uri:
+      body:
+        attachments:
+           attachment:
+             file: "{{mem_util_encode.stdout}}"
+             filename: "'{{inc_no}}'_'{{timestamp.stdout}}'.txt"
+        number: "{{ incnumber }}"
+      body_format: json
+      force_basic_auth: true
+      method: POST
+      password: YZ3uS3f2h.!=bcRztTdE
+      status_code: 201
+      url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+      user: A04681RTSAdevintaToSN

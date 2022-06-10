@@ -1,82 +1,68 @@
 ---
-- hosts: all
+- hosts: "{{hostname}}"
   connection: network_cli
   gather_facts: false
-
+  
   tasks:
   - name: Triggering high interface utilization command
     ios_command:
        commands:
           - show interface {{ interfacenumber }}
-    register: interface
+    register: interface_out
     ignore_errors: true
 
-  - debug: var=interface
+  - debug: var=interface_out
+
+  - command: date +'%d/%m/%Y_%H:%M:%S'
+    register: timestamp
+
+  - name: encoding
+    shell: "echo {{ interface_out.stdout | b64encode }}"
+    register: interface_out_encode
 
   - name: Triggering high interface utilization command in human-readable format
     ios_command:
        commands:
           - show interface {{ interfacenumber }} human-readable | in rate
-    register: interface_read
+    register: interface_read_out
     ignore_errors: true
 
-  - debug: var=interface_read
-  
-  - name: Printing static statement when failed to check for input error
-    debug:
-       msg:
-          - "The below mentioned commands failed to execute on {{ interfacenumber }}"
-          - "show interface {{ interfacenumber }}"
-          - "show interface {{ interfacenumber }} human-readable | in rate"
-          - "Please check this issue manually."
-          - "Email content Starts: "
-          - "The below mentioned commands failed to execute on {{ hostname }}"
-          - "show interface {{ interfacenumber }}"
-          - "show interface {{ interfacenumber }} human-readable | in rate"
-          - "Please resolve this issue manually."
-          - "Email content Ends"
-    ignore_errors: true
-    when: 
-      - interface is failed
-      - interface_read is failed 
+  - debug: var=interface_read_out
+     
+  - name: encoding
+    shell: "echo {{ interface_read_out.stdout | b64encode }}"
+    register: interface_read_out_encode
 
-#- name: insert a line at the end of the files
-#  lineinfile:
-#    create: true
-#    dest: "/tmp/high_interface_alert.txt"
-#    state: present
-#    line: "{{ item }}"
-#  loop: "{{ lookup('flattened', interface.stdout_lines, wantlist=True) }}"
-#  ignore_errors: true
-
-  - name: display output of interface
-    debug:
-       msg:
-          - "-----------------------------------"
-          - "show interface {{ interfacenumber }}"
-          - "-----------------------------------"
-          - "{{ interface.stdout_lines }}"
-          - "------------------------------------"
-          - "show interface {{ interfacenumber }} human-readable | in rate"
-          - "-----------------------------------"
-          - "{{ interface.stdout_lines }} human-readable | in rate"
-          - "------------------------------------"
-          - "Email content Starts: "
-          - "High input output utilization observed on {{ hostname }} interface."
-          - "----------------------------------------------------------------------------"
-          - "Output of show interface {{ interfacenumber }} is :"
-          - "-----------------------------------------------------------------------------"
-          - "{{ interface.stdout_lines }}"
-          - "-----------------------------------------------------------------------------"
-          - "Output of show interface {{ interfacenumber }} human-readable | in rate is :"
-          - "-----------------------------------------------------------------------------"
-          - "{{ interface.stdout_lines }} human-readable | in rate"
-          - "-----------------------------------------------------------------------------"
-          - "Email content Ends"
+  - name: "Create output attachment in incident"
+    uri:
+      body:
+        attachments:
+           attachment:
+             file: "{{interface_out_encode.stdout}}"
+             filename: "'{{inc_no}}'_'{{timestamp.stdout}}'_out.txt"
+        number: "{{incnumber}}"
+      body_format: json
+      force_basic_auth: true
+      method: POST
+      password: YZ3uS3f2h.!=bcRztTdE
+      status_code: 201
+      url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+      user: A04681RTSAdevintaToSN
     ignore_errors: true
 
-#- name: cleanup of temporary files
-#  file:
-#    path: /tmp/high_interface_alert.txt
-#    state: absent
-
+  - name: "Create output attachment in incident"
+    uri:
+      body:
+        attachments:
+           attachment:
+             file: "{{interface_read_out_encode.stdout}}"  
+             filename: "'{{inc_no}}'_'{{timestamp.stdout}}'_read.txt"
+        number: "{{incnumber}}"
+      body_format: json
+      force_basic_auth: true
+      method: POST
+      password: YZ3uS3f2h.!=bcRztTdE
+      status_code: 201
+      url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+      user: A04681RTSAdevintaToSN
+    ignore_errors: true

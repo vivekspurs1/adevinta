@@ -4,9 +4,8 @@ agent any
 stages{
 stage('Trigger playbook') {
 steps {
-sh "ansible-playbook /test/playbook.yml"
+sh "ansible-playbook /Adevinta-network/Cisco/High_CPU_Utilization/main.yml --extra-vars hostname=${hostname} --extra-vars devicefamilyname=${devicefamilyname} --extra-vars interfacenumber=${interfacenumber} --extra-vars incnumber=${incnumber}"
 }
 }
-
 }
 }

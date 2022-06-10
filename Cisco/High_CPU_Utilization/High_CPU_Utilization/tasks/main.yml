@@ -15,33 +15,45 @@
   ignore_errors: true
 - debug: var=cpu_his
 
-- name: saving the file as text file
-  copy content={{ cpu_util }} dest=/path/to/destination/file
+- name: encoding
+  shell: echo {{ cpu_util.stdout | b64encode }}
+  register: cpu_util_encode
 
-- name: Printing static statement when failed to check for input error
-  debug:
-    msg:
-      - "The below mentioned command failed to execute on {{ inventory_hostname }} "
-      - "sh processes cpu sorted | ex 0.00"
-      - "Please check this issue manually."
-      - "Output for Rundeck Ends"
-      - "Email content Starts: "
-      - "The below mentioned command failed to execute on {{ inventory_hostname }}"
-      - "sh processes cpu sorted | ex 0.00"
-      - "Please resolve this issue manually."
-      - "Email content Ends"
-  ignore_errors: true
-  when: cpu_util is failed
+- name: encoding
+  shell: echo {{ cpu_his.stdout | b64encode }}
+  register: cpu_his_encode
 
-- name: Display output consuming high CPU
-  debug:
-    msg:
-      - "High CPU utilization is observed on {{ inventory_hostname }}."
-      - "-------------------------------------------------------------"
-      - "Output of show proc cpu sort | ex 0.00"
-      - "{{ cpu_util.stdout_lines }}"
-      - "Output of show proc cpu hist | ex 0.00"
-      - "{{ cpu_his.stdout_lines }}"
-  ignore_errors: true
-  when: cpu_util is success
+- command: date +'%d/%m/%Y_%H:%M:%S'
+  register: timestamp
 
+- name: "Create output attachment in incident"
+  uri:
+   body:
+     attachments:
+       attachment:
+         file: "{{cpu_util_encode.stdout}}"
+         filename: "'{{inc_no}}'_'{{timestamp.stdout}}'_util.txt"
+     number: "{{ incnumber }}"
+   body_format: json
+   force_basic_auth: true
+   method: POST
+   password: YZ3uS3f2h.!=bcRztTdE
+   status_code: 201
+   url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+   user: A04681RTSAdevintaToSN
+
+- name: "Create output attachment in incident"
+  uri:
+   body:
+     attachments:
+       attachment:
+         file: "{{cpu_his_encode.stdout}}"
+         filename: "'{{inc_no}}'_'{{timestamp.stdout}}'_hist.txt"
+     number: "{{ incnumber }}"
+   body_format: json
+   force_basic_auth: true
+   method: POST
+   password: YZ3uS3f2h.!=bcRztTdE
+   status_code: 201
+   url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+   user: A04681RTSAdevintaToSN
