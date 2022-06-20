@@ -15,7 +15,7 @@ expression { params.usecase_name == 'high memory utilization' }
 }
 steps {
 echo "Triggering high memory utilization Job "
-build job: 'High_Memory_Utilization', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber))]
+build job: 'High_Memory_Utilization', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber)),string(name: 'ipaddress', value: String.valueOf(ipaddress))]
 //] 
 }
 }
@@ -27,7 +27,7 @@ expression { params.usecase_name == 'high interface utilization' }
 }
 steps {
 echo "Triggering high interface utilization Job "
-build job: 'High_Interface_Utilization', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber))]
+build job: 'High_Interface_Utilization', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber)),string(name: 'ipaddress', value: String.valueOf(ipaddress))]
 //]
 }
 }
@@ -38,7 +38,7 @@ expression { params.usecase_name == 'high CPU utilization' }
 }
 steps {
 echo "Triggering high CPU utilization Job "
-build job: 'High_CPU_Utilization', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber))]
+build job: 'High_CPU_Utilization', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber)),string(name: 'ipaddress', value: String.valueOf(ipaddress))]
 //]
 }
 }
@@ -49,7 +49,7 @@ expression { params.usecase_name == 'interface down' }
 }
 steps {
 echo "Triggering Interface down Job "
-build job: 'Interface_Down', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber))]
+build job: 'Interface_Down', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber)),string(name: 'ipaddress', value: String.valueOf(ipaddress))]
 //]
 }
 }

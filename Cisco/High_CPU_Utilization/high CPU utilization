@@ -4,7 +4,11 @@ agent any
 stages{
 stage('Trigger playbook') {
 steps {
+<<<<<<< HEAD
 sh "ansible-playbook /Adevinta-network/Cisco/High_CPU_Utilization/main.yml --vault-password-file /Adevinta-network/Cisco/pass/pass --extra-vars hostname=${hostname} --extra-vars devicefamilyname=${devicefamilyname} --extra-vars interfacenumber=${interfacenumber} --extra-vars incnumber=${incnumber} --extra-vars ipaddress=${ipaddress}"
+=======
+sh "ansible-playbook /Adevinta-network/Cisco/High_CPU_Utilization/main.yml --extra-vars hostname=${hostname} --extra-vars devicefamilyname=${devicefamilyname} --extra-vars interfacenumber=${interfacenumber} --extra-vars incnumber=${incnumber} --extra-vars ipaddress=${ipaddress}"
+>>>>>>> c0a6865b7be81f9469a76a5739bda80246ad93e6
 }
 }
 }
