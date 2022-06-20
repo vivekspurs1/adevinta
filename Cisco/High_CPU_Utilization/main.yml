@@ -1,6 +1,9 @@
 ---
 - name: High CPU Utilization
   hosts: all
+  vars:
+    inc_no: "{{incnumber}}"
+    hosts: "{{hostname}}"
   vars_files:
      - cred.yml
   roles:
