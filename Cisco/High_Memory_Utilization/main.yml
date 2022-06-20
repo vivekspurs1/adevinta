@@ -1,6 +1,7 @@
 ---
 - name: High Memory Utilization
-  hosts: all
+  hosts: localhost  
+  vars:
+    inc_no: INC5535661
   roles:
    - role: "High_Memory_Utilization"
-
