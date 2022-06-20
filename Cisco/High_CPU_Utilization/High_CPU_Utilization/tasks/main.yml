@@ -42,6 +42,7 @@
    status_code: 201
    url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
    user: A04681RTSAdevintaToSN
+  ignore_errors: yes
 
 - name: "Create output attachment in incident"
   uri:
@@ -58,3 +59,4 @@
    status_code: 201
    url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
    user: A04681RTSAdevintaToSN
+  ignore_errors: yes
