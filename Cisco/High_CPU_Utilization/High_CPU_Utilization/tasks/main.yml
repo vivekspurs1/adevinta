@@ -2,7 +2,7 @@
 - name: Triggering high cpu utilization command on device
   ios_command:
     commands:
-      - sh processes cpu sorted | ex 0.00
+      - sh processes cpu sorted
   register: cpu_util
   ignore_errors: true
 - debug: var=cpu_util
@@ -10,17 +10,18 @@
 - name: Triggering high cpu utilization history
   ios_command:
     commands:
-      - sh processes cpu history | ex 0.00
+      - sh processes cpu history
   register: cpu_his
   ignore_errors: true
 - debug: var=cpu_his
 
+
 - name: encoding
-  shell: echo {{ cpu_util.stdout | b64encode }}
+  shell: echo {{ cpu_util.stdout }} | base64
   register: cpu_util_encode
 
 - name: encoding
-  shell: echo {{ cpu_his.stdout | b64encode }}
+  shell: echo {{ cpu_his.stdout }} | base64
   register: cpu_his_encode
 
 - command: date +'%d/%m/%Y_%H:%M:%S'
