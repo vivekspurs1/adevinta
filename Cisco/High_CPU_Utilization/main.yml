@@ -1,6 +1,6 @@
 ---
 - name: High CPU Utilization
-  hosts: "{{hostname}}"
+  hosts: all
   roles:
    - role: "High_CPU_Utilization"
 
