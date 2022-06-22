@@ -1,31 +1,34 @@
-  - name: cmd
-    command: df
-    register: df_util
-    ignore_errors: true
+---
+- name: Below command will be executed on device to check which process is consuming high memory.
+  ios_command:
+    commands:
+      - show process summary
+  register: mem_util
+  ignore_errors: true
 
-  - debug: var=df_util
-    ignore_errors: true
+- debug: var=mem_util
+  ignore_errors: true
 
-  - name: encoding
-    shell: echo {{ df_util.stdout | b64encode }}
-    register: df_util_encode
+- name: encoding
+  shell: echo {{ mem_util.stdout | b64encode }}
+  register: mem_util_encode
 
-  - command: date +'%d/%m/%Y_%H:%M:%S'
-    register: timestamp
+- command: date +'%d/%m/%Y_%H:%M:%S'
+  register: timestamp
 
-  - name: "Create output attachment in incident"
-    uri:
-      body:
-        attachments:
-           attachment:
-             file: "{{df_util_encode.stdout}}"
-             filename: "{{inc_no}}_{{timestamp.stdout}}_new.txt"
-        number: "{{ inc_no }}"
-      body_format: json
-      force_basic_auth: true
-      method: POST
-      password: YZ3uS3f2h.!=bcRztTdE
-      status_code: 201
-      url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
-      user: A04681RTSAdevintaToSN
-    ignore_errors: true
+- name: "Create output attachment in incident"
+  uri:
+   body:
+     attachments:
+       attachment:
+         file: "{{mem_util_encode.stdout}}"
+         filename: "'{{incnumber}}'_'{{timestamp.stdout}}'.txt"
+     number: "{{ incnumber }}"
+   body_format: json
+   force_basic_auth: true
+   method: POST
+   password: YZ3uS3f2h.!=bcRztTdE
+   status_code: 201
+   url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+   user: A04681RTSAdevintaToSN
+  ignore_errors: yes

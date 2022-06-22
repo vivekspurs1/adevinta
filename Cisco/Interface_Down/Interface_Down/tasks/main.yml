@@ -1,66 +1,62 @@
 ---
-- hosts: "{{hostname}}"
-  connection: network_cli
-  gather_facts: false
-  tasks:
-  - name: checking interface status
-    ios_command:
-     commands:
+- name: checking interface status
+  ios_command:
+    commands:
       - Show interface {{ interface_name }} status
-    register: status
-    ignore_errors: true
+  register: status
+  ignore_errors: true
 
-  - debug: var=status
-    ignore_errors: true
+- debug: var=status
+  ignore_errors: true
 
-  - name: checking interface status
-    ios_command:
-     commands:
+- name: checking interface status
+  ios_command:
+    commands:
       - Show run interface {{ interface_name }}
-    register: run_status
-    ignore_errors: true
+  register: run_status
+  ignore_errors: true
 
-  - debug: var=run_status
-    ignore_errors: true
+- debug: var=run_status
+  ignore_errors: true
 
-  - name: encoding
-    shell: "echo {{ status.stdout | b64encode }}"
-    register: status_encode
+- name: encoding
+  shell: "echo {{ status.stdout | b64encode }}"
+  register: status_encode
 
-  - name: encoding
-    shell: "echo {{ run_status.stdout | b64encode }}"
-    register: run_status_encode
+- name: encoding
+  shell: "echo {{ run_status.stdout | b64encode }}"
+  register: run_status_encode
 
-  - name: "Create output attachment in incident"
-    uri:
-      body:
-        attachments:
-          attachment:
-            file: "{{status_encode.stdout}}"
-            filename: "'{{inc_no}}'_'{{timestamp.stdout}}'_intstatus.txt"        
-        number: "{{incnumber}}"
-      body_format: json
-      force_basic_auth: true
-      method: POST
-      password: YZ3uS3f2h.!=bcRztTdE
-      status_code: 201
-      url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
-      user: A04681RTSAdevintaToSN
-    ignore_errors: true
+- name: "Create output attachment in incident"
+  uri:
+   body:
+     attachments:
+       attachment:
+         file: "{{status_encode.stdout}}"
+         filename: "'{{incnumber}}'_'{{timestamp.stdout}}'_intstatus.txt"        
+     number: "{{incnumber}}"
+   body_format: json
+   force_basic_auth: true
+   method: POST
+   password: YZ3uS3f2h.!=bcRztTdE
+   status_code: 201
+   url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+   user: A04681RTSAdevintaToSN
+  ignore_errors: true
 
-  - name: "Create output attachment in incident"
-    uri:
-      body:
-        attachments:
-          attachment:
-            file: "{{run_status_encode.stdout}}"
-            filename: "'{{inc_no}}'_'{{timestamp.stdout}}'_runstatus.txt"
-        number: "{{incnumber}}"
-      body_format: json
-      force_basic_auth: true
-      method: POST
-      password: YZ3uS3f2h.!=bcRztTdE
-      status_code: 201
-      url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
-      user: A04681RTSAdevintaToSN
-    ignore_errors: true
+- name: "Create output attachment in incident"
+  uri:
+   body:
+     attachments:
+       attachment:
+         file: "{{run_status_encode.stdout}}"
+         filename: "'{{incnumber}}'_'{{timestamp.stdout}}'_runstatus.txt"
+     number: "{{incnumber}}"
+   body_format: json
+   force_basic_auth: true
+   method: POST
+   password: YZ3uS3f2h.!=bcRztTdE
+   status_code: 201
+   url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+   user: A04681RTSAdevintaToSN
+  ignore_errors: true

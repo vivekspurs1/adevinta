@@ -1,68 +1,63 @@
 ---
-- hosts: "{{hostname}}"
-  connection: network_cli
-  gather_facts: false
-  
-  tasks:
-  - name: Triggering high interface utilization command
-    ios_command:
-       commands:
-          - show interface {{ interfacenumber }}
-    register: interface_out
-    ignore_errors: true
+- name: Triggering high interface utilization command
+  ios_command:
+    commands:
+      - show interface {{ interfacenumber }}
+  register: interface_out
+  ignore_errors: true
 
-  - debug: var=interface_out
+- debug: var=interface_out
 
-  - command: date +'%d/%m/%Y_%H:%M:%S'
-    register: timestamp
+- command: date +'%d/%m/%Y_%H:%M:%S'
+  register: timestamp
 
-  - name: encoding
-    shell: "echo {{ interface_out.stdout | b64encode }}"
-    register: interface_out_encode
+- name: encoding
+  shell: "echo {{ interface_out.stdout | b64encode }}"
+  register: interface_out_encode
 
-  - name: Triggering high interface utilization command in human-readable format
-    ios_command:
-       commands:
-          - show interface {{ interfacenumber }} human-readable | in rate
-    register: interface_read_out
-    ignore_errors: true
+- name: Triggering high interface utilization command in human-readable format
+  ios_command:
+    commands:
+      - show interface {{ interfacenumber }} human-readable | in rate
+  register: interface_read_out
+  ignore_errors: true
 
-  - debug: var=interface_read_out
+- debug: var=interface_read_out
      
-  - name: encoding
-    shell: "echo {{ interface_read_out.stdout | b64encode }}"
-    register: interface_read_out_encode
+- name: encoding
+  shell: "echo {{ interface_read_out.stdout | b64encode }}"
+  register: interface_read_out_encode
 
-  - name: "Create output attachment in incident"
-    uri:
-      body:
-        attachments:
-           attachment:
-             file: "{{interface_out_encode.stdout}}"
-             filename: "'{{inc_no}}'_'{{timestamp.stdout}}'_out.txt"
-        number: "{{incnumber}}"
-      body_format: json
-      force_basic_auth: true
-      method: POST
-      password: YZ3uS3f2h.!=bcRztTdE
-      status_code: 201
-      url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
-      user: A04681RTSAdevintaToSN
-    ignore_errors: true
+- name: "Create output attachment in incident"
+  uri:
+   body:
+     attachments:
+       attachment:
+         file: "{{interface_out_encode.stdout}}"
+         filename: "'{{incnumber}}'_'{{timestamp.stdout}}'_out.txt"
+     number: "{{incnumber}}"
+   body_format: json
+   force_basic_auth: true
+   method: POST
+   password: YZ3uS3f2h.!=bcRztTdE
+   status_code: 201
+   url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+   user: A04681RTSAdevintaToSN
+  ignore_errors: true
 
-  - name: "Create output attachment in incident"
-    uri:
-      body:
-        attachments:
-           attachment:
-             file: "{{interface_read_out_encode.stdout}}"  
-             filename: "'{{inc_no}}'_'{{timestamp.stdout}}'_read.txt"
-        number: "{{incnumber}}"
-      body_format: json
-      force_basic_auth: true
-      method: POST
-      password: YZ3uS3f2h.!=bcRztTdE
-      status_code: 201
-      url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
-      user: A04681RTSAdevintaToSN
-    ignore_errors: true
+- name: "Create output attachment in incident"
+  uri:
+   body:
+     attachments:
+       attachment:
+         file: "{{interface_read_out_encode.stdout}}"  
+         filename: "'{{incnumber}}'_'{{timestamp.stdout}}'_read.txt"
+     number: "{{incnumber}}"
+   body_format: json
+   force_basic_auth: true
+   method: POST
+   password: YZ3uS3f2h.!=bcRztTdE
+   status_code: 201
+   url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+   user: A04681RTSAdevintaToSN
+  ignore_errors: true

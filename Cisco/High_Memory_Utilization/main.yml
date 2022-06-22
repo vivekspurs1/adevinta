@@ -1,7 +1,7 @@
 ---
 - name: High Memory Utilization
-  hosts: localhost  
-  vars:
-    inc_no: "{{incnumber}}"
+  hosts: all
+  vars_files: 
+    cred.yml
   roles:
    - role: "High_Memory_Utilization"
