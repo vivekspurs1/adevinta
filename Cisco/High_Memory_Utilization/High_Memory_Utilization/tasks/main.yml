@@ -2,7 +2,7 @@
 - name: Below command will be executed on device to check which process is consuming high memory.
   ios_command:
     commands:
-      - show process summary
+      - sh process summary
   register: mem_util
   ignore_errors: true
 
