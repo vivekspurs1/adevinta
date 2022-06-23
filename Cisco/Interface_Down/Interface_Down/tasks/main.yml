@@ -2,7 +2,7 @@
 - name: checking interface status
   ios_command:
     commands:
-      - Show interface {{ interface_name }} status
+      - Show interface {{ interfacenumber}} status
   register: status
   ignore_errors: true
 
@@ -12,7 +12,7 @@
 - name: checking interface status
   ios_command:
     commands:
-      - Show run interface {{ interface_name }}
+      - Show run interface {{ interfacenumber }}
   register: run_status
   ignore_errors: true
 
