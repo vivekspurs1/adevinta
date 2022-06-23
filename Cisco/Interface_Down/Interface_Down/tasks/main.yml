@@ -27,6 +27,9 @@
   shell: "echo {{ run_status.stdout | b64encode }}"
   register: run_status_encode
 
+- command: date +'%d/%m/%Y_%H:%M:%S'
+  register: timestamp
+
 - name: "Create output attachment in incident"
   uri:
    body:
