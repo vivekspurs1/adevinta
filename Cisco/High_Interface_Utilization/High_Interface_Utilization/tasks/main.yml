@@ -12,7 +12,7 @@
   register: timestamp
 
 - name: encoding
-  shell: "echo {{ interface_out.stdout | b64encode }}"
+  shell: echo {{ interface_out.stdout }} | base64
   register: interface_out_encode
 
 - name: Triggering high interface utilization command in human-readable format
@@ -23,9 +23,9 @@
   ignore_errors: true
 
 - debug: var=interface_read_out
-     
+
 - name: encoding
-  shell: "echo {{ interface_read_out.stdout | b64encode }}"
+  shell: echo {{ interface_read_out.stdout }} | base64
   register: interface_read_out_encode
 
 - name: "Create output attachment in incident"

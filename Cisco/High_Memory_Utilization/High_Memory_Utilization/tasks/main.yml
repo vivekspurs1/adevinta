@@ -11,7 +11,7 @@
   ignore_errors: true
 
 - name: encoding
-  shell: echo {{ mem_util.stdout | b64encode }}
+  shell: echo {{ mem_util.stdout }} | base64
   register: mem_util_encode
 
 - command: date +'%d/%m/%Y_%H:%M:%S'
