@@ -1,6 +1,7 @@
 ---
 - name: High CPU Utilization
   hosts: all
+  gather_facts: false
   vars_files: 
     cred.yml
   roles:
