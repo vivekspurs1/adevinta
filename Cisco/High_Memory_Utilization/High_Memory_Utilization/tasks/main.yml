@@ -1,35 +1,55 @@
 ---
-- name: Below command will be executed on device to check which process is consuming high memory.
-  ios_command:
-    commands: |
-      terminal length 0
-      sh process memory
-  register: mem_util
-  ignore_errors: true
+- name: High Memory Utilization
+  block: 
+   - name: Below command will be executed on device to check which process is consuming high memory.
+     ios_command:
+       commands: |
+          terminal length 0
+          sh process memory
+     register: mem_util
 
-- debug: var=mem_util
-  ignore_errors: true
+   - debug: var=mem_util
 
-- name: encoding
-  shell: echo {{ mem_util.stdout }} | base64
-  register: mem_util_encode
+   - name: encoding
+     shell: echo {{ mem_util.stdout }} | base64
+     register: mem_util_encode
 
-- command: date +'%d/%m/%Y_%H:%M:%S'
-  register: timestamp
+   - command: date +'%d/%m/%Y_%H:%M:%S'
+     register: timestamp
 
-- name: "Create output attachment in incident"
-  uri:
-   body:
-     attachments:
-       attachment:
-         file: "{{mem_util_encode.stdout}}"
-         filename: "'{{incnumber}}'_'{{timestamp.stdout}}'.txt"
-     number: "{{ incnumber }}"
-   body_format: json
-   force_basic_auth: true
-   method: POST
-   password: YZ3uS3f2h.!=bcRztTdE
-   status_code: 201
-   url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
-   user: A04681RTSAdevintaToSN
-  ignore_errors: yes
+   - name: "Create output attachment in incident"
+     uri:
+       body:
+         attachments:
+           attachment:
+             file: "{{mem_util_encode.stdout}}"
+             filename: "'{{incnumber}}'_'{{timestamp.stdout}}'.txt"
+         number: "{{ incnumber }}"
+       body_format: json
+       force_basic_auth: true
+       method: POST
+       password: YZ3uS3f2h.!=bcRztTdE
+       status_code: 201
+       url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+       user: A04681RTSAdevintaToSN
+     ignore_errors: yes
+
+  rescue:
+   - name: Print when errors
+     ansible.builtin.debug:
+       msg: "Code execution failed kindly check it manually."
+     register: error
+
+   - debug: var=error
+
+   - name: "Create output attachment in incident"
+     uri:
+       body: {"number":"INC5581255", "work_notes":"{{error.msg}}"}
+       body_format: json
+       force_basic_auth: true
+       method: POST
+       password: YZ3uS3f2h.!=bcRztTdE
+       status_code: 201
+       url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+       user: A04681RTSAdevintaToSN
+     ignore_errors: true
