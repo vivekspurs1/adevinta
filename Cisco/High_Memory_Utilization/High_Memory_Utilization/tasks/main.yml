@@ -44,7 +44,7 @@
 
    - name: "Create output attachment in incident"
      uri:
-       body: {"number":"INC5581255", "work_notes":"{{error.msg}}"}
+       body: {"number":"{{incnumber}}", "work_notes":"{{error.msg}}"}
        body_format: json
        force_basic_auth: true
        method: POST

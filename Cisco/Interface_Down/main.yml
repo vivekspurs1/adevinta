@@ -1,8 +1,8 @@
 ---
 - name: Interface Down
   hosts: all
+  gather_facts: false
   vars_files: 
     cred.yml
   roles:
    - role: "Interface_Down"
-
