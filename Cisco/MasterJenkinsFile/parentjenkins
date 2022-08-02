@@ -2,16 +2,16 @@ pipeline {
 agent any
 parameters {
 choice(
-choices: ['high memory utilization' , 'high interface utilization', 'high CPU utilization', 'interface down'],
+choices: ['High Memory Utilization' , 'high interface utilization', 'high CPU utilization', 'interface down'],
 description: '',
 name: 'usecase_name')
 }
 
 
 stages {
-stage ('high memory utilization') {
+stage ('High Memory Utilization') {
 when {
-expression { params.usecase_name == 'high memory utilization' }
+expression { params.usecase_name == 'High Memory Utilization' }
 }
 steps {
 echo "Triggering high memory utilization Job "
