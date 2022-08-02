@@ -2,7 +2,7 @@ pipeline {
 agent any
 parameters {
 choice(
-choices: ['High Memory Utilization' , 'high interface utilization', 'high CPU utilization', 'interface down'],
+choices: ['High Memory Utilization' , 'High Interface Input', 'High Interface Output', 'High CPU Utilization', 'Interface Down'],
 description: '',
 name: 'usecase_name')
 }
@@ -16,25 +16,38 @@ expression { params.usecase_name == 'High Memory Utilization' }
 steps {
 echo "Triggering high memory utilization Job "
 build job: 'High_Memory_Utilization', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber)),string(name: 'ipaddress', value: String.valueOf(ipaddress))]
-//] 
-}
-}
-
-
-stage ('high interface utilization') {
-when {
-expression { params.usecase_name == 'high interface utilization' }
-}
-steps {
-echo "Triggering high interface utilization Job "
-build job: 'High_Interface_Utilization', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber)),string(name: 'ipaddress', value: String.valueOf(ipaddress))]
 //]
 }
 }
 
-stage ('high CPU utilization') {
+
+stage ('High Interface Input') {
 when {
-expression { params.usecase_name == 'high CPU utilization' }
+expression { params.usecase_name == 'High Interface Input' }
+}
+steps {
+echo "Triggering high interface utilization Job "
+build job: 'High_Interface_Input', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber)),string(name: 'ipaddress', value: String.valueOf(ipaddress))]
+//]
+}
+}
+
+
+stage ('High Interface Output') {
+when {
+expression { params.usecase_name == 'High Interface Output' }
+}
+steps {
+echo "Triggering high interface utilization Job "
+build job: 'High_Interface_Output', wait: false, parameters: [string(name: 'usecase_name', value: String.valueOf(usecase_name)),string(name: 'hostname', value: String.valueOf(hostname)),string(name: 'devicefamilyname', value: String.valueOf(devicefamilyname)),string(name: 'interfacenumber', value: String.valueOf(interfacenumber)),string(name: 'incnumber', value: String.valueOf(incnumber)),string(name: 'ipaddress', value: String.valueOf(ipaddress))]
+//]
+}
+}
+
+
+stage ('High CPU Utilization') {
+when {
+expression { params.usecase_name == 'High CPU Utilization' }
 }
 steps {
 echo "Triggering high CPU utilization Job "
@@ -45,7 +58,7 @@ build job: 'High_CPU_Utilization', wait: false, parameters: [string(name: 'useca
 
 stage ('Interface Down') {
 when {
-expression { params.usecase_name == 'interface down' }
+expression { params.usecase_name == 'Interface Down' }
 }
 steps {
 echo "Triggering Interface down Job "
