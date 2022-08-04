@@ -2,7 +2,7 @@ pipeline {
 agent any
 parameters {
 choice(
-choices: ['High Memory Utilization' , 'High Interface Input', 'High Interface Output', 'High CPU Utilization', 'Interface Down'],
+choices: ['High Memory Utilization' , 'High Input Utilization', 'High Output Utilization', 'High CPU Utilization', 'Interface Down'],
 description: '',
 name: 'usecase_name')
 }
@@ -21,9 +21,9 @@ build job: 'High_Memory_Utilization', wait: false, parameters: [string(name: 'us
 }
 
 
-stage ('High Interface Input') {
+stage ('High Input Utilization') {
 when {
-expression { params.usecase_name == 'High Interface Input' }
+expression { params.usecase_name == 'High Input Utilization' }
 }
 steps {
 echo "Triggering high interface utilization Job "
@@ -33,9 +33,9 @@ build job: 'High_Interface_Input', wait: false, parameters: [string(name: 'useca
 }
 
 
-stage ('High Interface Output') {
+stage ('High Output Utilization') {
 when {
-expression { params.usecase_name == 'High Interface Output' }
+expression { params.usecase_name == 'High Output Utilization' }
 }
 steps {
 echo "Triggering high interface utilization Job "
