@@ -1,3 +1,4 @@
+currentBuild.displayName = "Adevinta-#"+currentBuild.number
 pipeline {
 agent any
 parameters {
