@@ -1,4 +1,4 @@
-currentBuild.displayName = "string(name: 'incnumber', value: String.valueOf(incnumber))#"+currentBuild.number
+currentBuild.displayName = string(name: 'incnumber', value: String.valueOf(incnumber))#+currentBuild.number
 pipeline {
 agent any
 parameters {
