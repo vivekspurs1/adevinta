@@ -1,4 +1,4 @@
-currentBuild.displayName = "Adevinta-#"+currentBuild.number
+currentBuild.displayName = "String.valueOf(incnumber)-#"+currentBuild.number
 pipeline {
 agent any
 parameters {
