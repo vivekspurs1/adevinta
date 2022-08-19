@@ -41,7 +41,7 @@
        method: POST
        password: "{{servicenow_password}}"
        status_code: 201
-       url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+       url: "https://xml.itsm.accenture.com/ITSMXML/api/i_adevinta_inc_toaccsn/Adevinta/number"
        user: "{{servicenow_user}}"
      ignore_errors: true
 
@@ -58,7 +58,7 @@
        method: POST
        password: "{{servicenow_password}}"
        status_code: 201
-       url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+       url: "https://xml.itsm.accenture.com/ITSMXML/api/i_adevinta_inc_toaccsn/Adevinta/number"
        user: "{{servicenow_user}}"
      ignore_errors: true
 
@@ -78,6 +78,6 @@
        method: POST
        password: "{{servicenow_password}}"
        status_code: 201
-       url: "https://xml.itsmstaging.accenture.com/ITSMXML/api/i_Adevinta_INC_toACCSN/Adevinta/number"
+       url: "https://xml.itsm.accenture.com/ITSMXML/api/i_adevinta_inc_toaccsn/Adevinta/number"
        user: "{{servicenow_user}}"
      ignore_errors: true
