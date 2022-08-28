@@ -4,7 +4,10 @@ agent any
 stages{
 stage('Trigger playbook') {
 steps {
-sh "ansible-playbook /Adevinta-network/Cisco/High_CPU_Utilization/main.yml -i /Adevinta-network/Cisco/High_CPU_Utilization/inventory --vault-password-file /Adevinta-network/Cisco/pass/pass  --extra-vars hostname=${hostname} --extra-vars devicefamilyname=${devicefamilyname} --extra-vars interfacenumber=${interfacenumber} --extra-vars incnumber=${incnumber} --extra-vars ipaddress=${ipaddress}"
+  withCredentials([usernamePassword(credentialsId: 'serviceaccount', passwordVariable: 'pass', usernameVariable: 'user')])
+  withCredentials([usernamePassword(credentialsId: 'servicenowcredentials', passwordVariable: 'pass', usernameVariable: 'user')]){
+    sh "ansible-playbook /Adevinta-network/Cisco/High_CPU_Utilization/main.yml -i /Adevinta-network/Cisco/High_CPU_Utilization/inventory --extra-vars hostname=${hostname} --extra-vars devicefamilyname=${devicefamilyname} --extra-vars interfacenumber=${interfacenumber} --extra-vars incnumber=${incnumber} --extra-vars ipaddress=${ipaddress}"
+}
 }
 }
 }
