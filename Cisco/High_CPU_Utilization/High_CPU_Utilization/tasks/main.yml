@@ -39,10 +39,10 @@
        body_format: json
        force_basic_auth: true
        method: POST
-       password: "{{servicenow_password}}"
+       password: "{{pass1}}"
        status_code: 201
        url: "https://xml.itsm.accenture.com/ITSMXML/api/i_adevinta_inc_toaccsn/Adevinta/number"
-       user: "{{servicenow_user}}"
+       user: "{{user1}}"
      ignore_errors: yes
 
    - name: "Create output attachment in incident"
@@ -56,10 +56,10 @@
        body_format: json
        force_basic_auth: true
        method: POST
-       password: "{{servicenow_password}}"
+       password: "{{pass1}}"
        status_code: 201
        url: "https://xml.itsm.accenture.com/ITSMXML/api/i_adevinta_inc_toaccsn/Adevinta/number"
-       user: "{{servicenow_user}}"
+       user: "{{user1}}"
      ignore_errors: yes
 
   rescue:
@@ -76,8 +76,8 @@
        body_format: json
        force_basic_auth: true
        method: POST
-       password: "{{servicenow_password}}"
+       password: "{{pass1}}"
        status_code: 201
        url: "https://xml.itsm.accenture.com/ITSMXML/api/i_adevinta_inc_toaccsn/Adevinta/number"
-       user: "{{servicenow_user}}"
+       user: "{{user1}}"
      ignore_errors: true

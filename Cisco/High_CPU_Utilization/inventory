@@ -3,4 +3,6 @@ all:
     "{{hostname}}":
       ansible_connection: "network_cli"
       ansible_host: "{{ipaddress}}"
+      ansible_user: "{{user}}"
+      ansible_password: "{{pass}}"
       ansible_network_os: "cisco.ios.ios"
