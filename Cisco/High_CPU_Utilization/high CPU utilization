@@ -4,9 +4,10 @@ agent any
 stages{
 stage('Trigger playbook') {
 steps {
-  withCredentials([usernamePassword(credentialsId: 'serviceaccount', passwordVariable: 'pass', usernameVariable: 'user')])
-  withCredentials([usernamePassword(credentialsId: 'servicenowcredentials', passwordVariable: 'pass', usernameVariable: 'user')]){
-    sh "ansible-playbook /Adevinta-network/Cisco/High_CPU_Utilization/main.yml -i /Adevinta-network/Cisco/High_CPU_Utilization/inventory --extra-vars hostname=${hostname} --extra-vars devicefamilyname=${devicefamilyname} --extra-vars interfacenumber=${interfacenumber} --extra-vars incnumber=${incnumber} --extra-vars ipaddress=${ipaddress}"
+  withCredentials([usernamePassword(credentialsId: 'serviceaccount', passwordVariable: 'pass', usernameVariable: 'user')]){
+  withCredentials([usernamePassword(credentialsId: 'servicenowcredentials', passwordVariable: 'pass1', usernameVariable: 'user1')]){
+    sh "ansible-playbook /Adevinta-network/Cisco/High_CPU_Utilization/main.yml -i /Adevinta-network/Cisco/High_CPU_Utilization/inventory --extra-vars user=${user} --extra-vars user1=${user1} --extra-vars pass=${pass} --extra-vars pass1=${pass1} --extra-vars hostname=${hostname} --extra-vars devicefamilyname=${devicefamilyname} --extra-vars interfacenumber=${interfacenumber} --extra-vars incnumber=${incnumber} --extra-vars ipaddress=${ipaddress}"
+}
 }
 }
 }
